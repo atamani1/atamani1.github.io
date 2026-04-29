@@ -430,6 +430,17 @@ body.is-admin .save-content-btn{display:block;}
           </div>
         </div>
 
+        <label>Обложка трека</label>
+        <div style="display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:.5rem;">
+          <div id="coverUploadZone" style="width:80px;height:80px;border:1px dashed var(--border2);background:var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:1.5rem;" onclick="document.getElementById('coverFileIn').click()" ondragover="event.preventDefault();this.style.borderColor='#FFBB61'" ondragleave="this.style.borderColor=''" ondrop="handleCoverDrop(event)">
+            <span id="coverZoneIcon">🖼</span>
+          </div>
+          <div style="flex:1;min-width:150px;">
+            <input type="url" id="trackCover" placeholder="Ссылка появится автоматически" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:.7rem 1rem;font-family:Inter,sans-serif;font-size:.85rem;outline:none;width:100%;margin-bottom:.5rem;">
+            <div id="coverUploadStatus" style="font-size:.65rem;color:var(--muted);"></div>
+          </div>
+        </div>
+        <input type="file" id="coverFileIn" accept="image/*" hidden onchange="handleCoverFile(this.files[0])">
         <label>или вставь ссылку вручную</label>
         <input type="url" id="trackUrl" placeholder="https://archive.org/download/...">
 
