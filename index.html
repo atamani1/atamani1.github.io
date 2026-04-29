@@ -189,6 +189,38 @@ footer{padding:2rem 3rem 6rem;border-top:1px solid var(--border);display:flex;al
 .foot-copy{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .foot-link{color:var(--amber);text-decoration:none}
 .hidden{display:none}
+/* BURGER MENU */
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:transparent;border:none;}
+.burger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s;}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+.mobile-menu{
+  position:fixed;top:62px;left:0;right:0;z-index:190;
+  background:rgba(8,8,8,0.98);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0;
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .35s ease;
+}
+.mobile-menu.open{max-height:400px;padding:1rem 0;}
+.mobile-menu a{
+  display:block;padding:.85rem 2rem;
+  font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  border-bottom:1px solid var(--border);
+  transition:color .2s,background .2s;
+}
+.mobile-menu a:last-child{border-bottom:none;}
+.mobile-menu a:hover{color:var(--amber);background:rgba(255,187,97,0.04);}
+
+@media(max-width:768px){
+  .burger{display:flex;}
+  nav{display:none;}
+  #authBtn{font-size:.55rem;padding:.35rem .7rem;}
+}
+
 /* USER AUTH */
 .auth-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:Inter,sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:.4rem 1rem;cursor:pointer;transition:all .2s;}
 .auth-btn:hover{border-color:var(--amber);color:var(--amber);}
@@ -335,8 +367,19 @@ body.is-admin .save-content-btn{display:block;}
     <a href="#chat">Чат</a>
     <a href="#radio">Радио</a>
   </nav>
-  <div style="display:flex;align-items:center;gap:.75rem;"><button class="auth-btn" id="authBtn" onclick="openAuthModal()">Войти</button><button class="admin-gear" onclick="openAdminModal()">⚙</button></div>
+  <div style="display:flex;align-items:center;gap:.75rem;"><button class="auth-btn" id="authBtn" onclick="openAuthModal()">Войти</button><button class="admin-gear" onclick="openAdminModal()">⚙</button>
+  <button class="burger" id="burgerBtn" onclick="toggleBurger()">
+    <span></span><span></span><span></span>
+  </button></div>
 </header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeBurger()">Обо мне</a>
+  <a href="#music" onclick="closeBurger()">Музыка</a>
+  <a href="#clips" onclick="closeBurger()">Клипы</a>
+  <a href="#chat" onclick="closeBurger()">Чат</a>
+  <a href="#radio" onclick="closeBurger()">Радио</a>
+</div>
 
 <div class="hero">
   <div class="hero-photo" id="heroWrap">
@@ -1239,6 +1282,25 @@ function renderFavList() {
     list.appendChild(div);
   });
 }
+
+
+// ── BURGER MENU ───────────────────────────────────────────────
+function toggleBurger() {
+  const btn = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+function closeBurger() {
+  document.getElementById('burgerBtn').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+// Close burger on scroll
+window.addEventListener('scroll', () => {
+  if (document.getElementById('mobileMenu').classList.contains('open')) {
+    closeBurger();
+  }
+});
 
 </script>
 </body>
