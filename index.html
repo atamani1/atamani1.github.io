@@ -54,7 +54,7 @@ nav a:hover{color:var(--amber)}
 .btn-primary:hover{background:#fff}
 .btn-ghost{display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 2rem;background:transparent;color:var(--text);font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--border2);cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:all .2s}
 .btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
-.photo-upload-btn{position:absolute;top:80px;right:2rem;z-index:10;padding:.4rem 1rem;background:rgba(8,8,8,.8);border:1px solid var(--amber3);color:var(--amber);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.photo-upload-btn{position:absolute;top:80px;right:2rem;z-index:10;padding:.4rem 1rem;background:rgba(8,8,8,.8);border:1px solid var(--amber3);color:var(--amber);font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:none!important;}
 .photo-upload-btn:hover{background:var(--amber);color:#000}
 .ticker-wrap{background:var(--amber);padding:.55rem 0;overflow:hidden}
 .ticker{display:flex;animation:tick 25s linear infinite;white-space:nowrap}
@@ -191,6 +191,7 @@ footer{padding:2rem 3rem 6rem;border-top:1px solid var(--border);display:flex;al
 .hidden{display:none}
 .admin-only{display:none!important;}
 body.is-admin .admin-only{display:block!important;}
+body.is-admin .photo-upload-btn{display:block!important;}
 /* BURGER MENU */
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .burger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s;}
