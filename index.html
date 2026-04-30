@@ -99,6 +99,9 @@ nav a:hover{color:var(--amber)}
 .track-row:hover .t-del{opacity:.4}
 .t-del:hover{opacity:1!important;color:#e24b4a}
 body.is-admin .t-del{display:block}
+body.is-admin .t-name{cursor:pointer;}
+body.is-admin .t-name:hover{color:var(--amber);}
+body.is-admin .t-name[contenteditable="true"]{white-space:normal!important;overflow:visible!important;background:rgba(255,187,97,0.08);outline:1px solid var(--amber3);padding:2px 4px;}
 .wave-anim{display:flex;align-items:center;gap:2px;height:16px}
 .wb{width:2px;background:var(--amber);border-radius:1px;animation:wb 1.1s ease-in-out infinite}
 .wb:nth-child(2){animation-delay:.15s}.wb:nth-child(3){animation-delay:.3s}.wb:nth-child(4){animation-delay:.45s}
@@ -704,7 +707,7 @@ function renderTracks(){
     const coverHtml = t.cover ? `<img class="t-cover" src="${t.cover}" alt="">` : `<div class="t-cover-placeholder">🎵</div>`;
     row.innerHTML=`${coverHtml}<div class="t-num">${i===curT&&playing?'<div class="wave-anim"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>':String(i+1).padStart(2,'0')}</div>
       <button class="t-play" onclick="playT(${i});event.stopPropagation()"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">${isP?'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>':'<path d="M8 5v14l11-7z"/>'}</svg></button>
-      <div><div class="t-name">${esc(t.title)}</div><div class="t-sub">АТАМАНИ</div></div>
+      <div><div class="t-name" ${isAdmin?"contenteditable=\"true\" onblur=\"saveTrackTitle(event,'"+t.id+"')\"":" "} title="${esc(t.title)}">${esc(t.title)}</div><div class="t-sub">АТАМАНИ</div></div>
       <div class="t-dur" id="dur${i}">—</div>
       <button class="t-heart ${userFavorites.some(f=>f.id===t.id)?'faved':''}" onclick="toggleFavorite('${t.id}','${esc(t.title)}','${t.cover||''}','${t.url}');event.stopPropagation()">❤</button>
       <button class="t-del" onclick="delTrack('${t.id}',${i});event.stopPropagation()">✕</button>`;
@@ -1307,6 +1310,20 @@ window.addEventListener('scroll', () => {
     closeBurger();
   }
 });
+
+
+// ── EDIT TRACK TITLE ─────────────────────────────────────────
+function saveTrackTitle(e, trackId) {
+  if (!isAdmin) return;
+  const newTitle = e.target.textContent.trim();
+  if (!newTitle) return;
+  db.collection('tracks').doc(trackId).update({ title: newTitle })
+    .then(() => {
+      showToast('✏️', 'Название обновлено', newTitle);
+      loadTracks();
+    })
+    .catch(e => alert('Ошибка: ' + e.message));
+}
 
 </script>
 </body>
