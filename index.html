@@ -1026,6 +1026,34 @@ function togglePlay(){if(curT<0)return;if(playing){aud.pause();playing=false;}el
 function prevT(){if(tracks.length)playT(curT<=0?tracks.length-1:curT-1);}
 function nextT(){if(tracks.length)playT((curT+1)%tracks.length);}
 function setVol(v){aud.volume=v/100;}
+function showAlbumBg(url){
+  const bg=document.getElementById('albumBg');
+  const dim=document.getElementById('albumBgDim');
+  // Сначала пробуем напрямую
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    try{
+      const canvas=document.createElement('canvas');
+      canvas.width=img.width;canvas.height=img.height;
+      canvas.getContext('2d').drawImage(img,0,0);
+      const dataUrl=canvas.toDataURL('image/jpeg',0.8);
+      bg.style.backgroundImage='url('+dataUrl+')';
+    }catch(e){
+      // Если canvas заблокирован — просто ставим url напрямую
+      bg.style.backgroundImage='url('+url+')';
+    }
+    bg.style.opacity='1';
+    dim.style.opacity='1';
+  };
+  img.onerror=function(){
+    // Прямой url как fallback
+    bg.style.backgroundImage='url('+url+')';
+    bg.style.opacity='1';
+    dim.style.opacity='1';
+  };
+  img.src=url;
+}
 function updP(){
   if(curT>=0)document.getElementById('playerBar').classList.add('on');
   document.getElementById('pName').textContent=tracks[curT]?.title||'—';
@@ -1038,9 +1066,7 @@ function updP(){
   const dim=document.getElementById('albumBgDim');
   const cover=tracks[curT]?.cover;
   if(playing && cover){
-    bg.style.backgroundImage='url('+cover+')';
-    bg.style.opacity='1';
-    dim.style.opacity='1';
+    showAlbumBg(cover);
   } else {
     bg.style.opacity='0';
     dim.style.opacity='0';
